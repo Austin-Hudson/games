@@ -13,7 +13,8 @@ var SpeechRecognition = window.webkitSpeechRecognition ||   //prefixes for cross
     handSize          = 7,
     hands             = [],
     books             = [],
-    commands          =[],
+    commands          = [],
+    turn              = true;
     development       = true,
     inProgress        = false;
 
@@ -40,6 +41,8 @@ function start(){
   startButton.classList.add("hidden");
   //initalize the sound recognition
   initializeRecognition();
+  //render the cards
+  renderCards(hands);
   //start the game
   playGame();
 
@@ -52,6 +55,23 @@ function createBooksForNPlayers(numOfPlayers){
   for(var i = 0; i < numOfPlayers; i++)
   {
     books[i] = [];
+  }
+}
+
+/*
+  This function renders the cards
+*/
+function renderCards(hands){
+  console.log(hands);
+  if(turn){
+    var playerDiv = document.getElementById("player-hand");
+    //treat the first hand as the human player
+    for(var i = 0; i < hands[0].length; i++){
+        var card = document.createElement("img");
+        var dir = "cards/" + hands[0][i].suit + " " + hands[0][i].value + ".png";
+        card.setAttribute("src", dir);
+        playerDiv.appendChild(card);
+      }
   }
 }
 

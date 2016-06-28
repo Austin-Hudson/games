@@ -3,8 +3,8 @@ Global Variables for a Deck
 values - the values that a card can have
 suits - the suits that a card can have
 */
-var values = [2, 3, 4, 5, 6, 7, 8 , 9 , 10, "J", "Q", "K", "A"];
-var suits = ["C", "H", "D", "S"];
+var values = [1, 2, 3, 4, 5, 6, 7, 8 , 9 , 10, 11, 12, 13];
+var suits = ["Clubs", "Hearts", "Diamonds", "Spades"];
 
 /*
 The card object. It takes two parameters. One for the value and another for the suit
