@@ -67,7 +67,9 @@ function createBooksForNPlayers(numOfPlayers){
 function renderCards(hands){
     //empty exisiting contents
     var playerDiv = document.getElementById("player-hand");
+    var computerDiv = document.getElementById("computer-hand");
     playerDiv.innerHTML = "";
+    computerDiv.innerHTML = "";
     //treat the first hand as the human player and render them
     for(var i = 0; i < hands[0].length; i++){
         var card = document.createElement("img");
@@ -88,6 +90,13 @@ function renderCards(hands){
       stock.appendChild(image);
     }
     //render computer hand
+    for(var i =0; i < hands[1].length; i++){
+      var image = document.createElement("img");
+      var dir = "cards/" + "_Back.png";
+      image.setAttribute("src", dir);
+      image.classList.add("card");
+      computerDiv.appendChild(image);
+    }
 }
 
 /*
@@ -141,14 +150,25 @@ function speechResult() {
       if(turn){
         guess = searchForCard(card, hands[1]); //computer hand
         //if they guessed right take cards and render
+        while(guess){
+          renderOutcome(guess);
+          speechResult();
+          guess = searchForCard(card, hands[1]); //computer hand
+          console.log(hands[1]);
+        }
         renderOutcome(guess);
         turn = false;
       }
       else { //turn false is computer
         var compGuess = computerGuess(hands[0]);
-        console.log(hands[1][compGuess].value);
         displayChoice(hands[1][compGuess].value);
         guess = searchForCard(hands[1][compGuess].value,hands[0]); //player 1 hand
+        while(guess){
+          compGuess = computerGuess(hands[0]);
+          displayChoice(hands[1][compGuess].value);
+          guess = searchForCard(hands[1][compGuess].value,hands[0]); //player 1 hand
+          renderOutcome(guess);
+        }
         renderOutcome(guess);
         turn = true;
       }
@@ -217,10 +237,13 @@ function convertTextToValue(card){
  function renderOutcome(guess){
    var player;
    var display = document.getElementById("outcome");
-   var outcome = document.createElement("p");
+
 
    var para = document.querySelector("p");
-   if(para != null) { outcome.innerText = "";}
+   if(para != null) { para.innerText = "";}
+   else {
+    var outcome = document.createElement("p");
+   }
 
    //get who the player is
    if(turn) { player = "Player 1";}
@@ -228,7 +251,6 @@ function convertTextToValue(card){
 
    if(guess){
      var content = player + " guessed correctly";
-     outcome.innerHTML = "";
      outcome.innerText = content;
      display.appendChild(outcome);
    }
@@ -247,10 +269,12 @@ function convertTextToValue(card){
        hands[1].push(c);
      }
      var content = player + " says GoFish!";
-     outcome.innerText = ""
-     outcome.innerText = content;
-     display.appendChild(outcome);
+
    }
+
+   outcome = document.getElementById("outcome");
+   outcome.innerText = "";
+   outcome.innerText = content;
 
  }
  /*
