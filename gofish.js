@@ -43,6 +43,8 @@ function start(){
   initializeRecognition();
   //render the cards
   renderCards(hands);
+  //make short choices
+  makeShortChoices();
   //start the game
   playGame();
 
@@ -62,7 +64,6 @@ function createBooksForNPlayers(numOfPlayers){
   This function renders the cards
 */
 function renderCards(hands){
-  console.log(hands);
 
     var playerDiv = document.getElementById("player-hand");
     //treat the first hand as the human player and render them
@@ -130,19 +131,95 @@ function speechResult() {
   This function plays the card
  */
  function playTurn(card){
-
+      console.log(hands);
+      displayChoice(card);
+      var guess;
+      //turn true is player one
+      if(turn){
+        guess = searchForCard(card, hands[1]); //computer hand
+        renderOutcome(guess);
+        turn = false;
+      }
+      else {
+        guess = searchForCard(card,hands[0]); //player 1 hand
+        renderOutcome(guess);
+        turn = true;
+      }
+      //turn false is computer
  }
+/*
+ This function takes what they said and get the value
+*/
+function convertTextToValue(card){
+     if(card =="ace" || card == "aces"){return 1;}
+     if(card =="two" || card == "twos") {return 2;}
+     if(card =="three" || card == "threes") {return 3;}
+     if(card =="four" || card == "fours") {return 4;}
+     if(card =="fives" || card == "five") {return 5;}
+     if(card =="six" || card == "sixes") {return 6;}
+     if(card =="seven" || card == "sevens") {return 7;}
+     if(card =="eight" || card == "eights") {return 8;}
+     if(card =="nine" || card == "nines") {return 9;}
+     if(card =="ten" || card == "tens") {return 10;}
+     if(card == "jacks") {return 11;}
+     if(card == "queens") {return 12;}
+     if(card == "kings") {return 13;}
+
+
+}
 
 /*
+ This function searches for the card
+*/
+ function searchForCard(card,hand){
+   var value = convertTextToValue(card);
+   for(var i = 0; i < hand.length; i++){
+     if(value == hand[i]){
+       return true;
+     }
+   }
+   return false;
+ }
+
+ /*
+ This function renders the outcome
+ */
+ function renderOutcome(guess){
+   var player;
+   var display = document.getElementById("outcome");
+   var outcome = document.createElement("p");
+   //get who the player is
+   if(turn) { player = "Player 1";}
+   else {player = "Computer";}
+
+   if(guess){
+     var content = player + " guessed correctly";
+     outcome.innerText = content;
+   }
+   else{
+     var content = player + " says GoFish!";
+     outcome.innerText = content;
+   }
+   display.appendChild(outcome);
+ }
+ /*
+  This function displays what the user said
+ */
+function displayChoice(card){
+  var choice = document.getElementById("choice");
+  choice.innerText = card;
+
+}
+/*
  This function looks to see if they want to ask the
- computer for a certain card
+ computer for a certain card that exists in their hand
 */
  function checkForMatch(card) {
+
   var result = false;
   for (var i = 0; i < commands.length; i++) {
-    if (commands[i] == card) {
-      console.log("Match found with command: ", commands[i]);
-      result = scene.results[i];
+    if (commands[i] == card.toLowerCase()) {
+      return card;
     }
   }
   return result;
@@ -157,3 +234,44 @@ function playGame() {
     endGame();
   }
 }
+
+/*
+ This function is used to make short choices so its easier to process the voice commands
+*/
+function makeShortChoices() {
+  var shortChoices = [];
+  for (var i = 0; i < hands[0].length; i++) {
+      var value = hands[0][i].value;
+      if(value == 1) {shortChoices.push("aces");
+                      shortChoices.push("ace");}
+      if(value == 2) {shortChoices.push("twos");
+                      shortChoices.push("2");
+                      shortChoices.push("two");}
+      if(value == 3) {shortChoices.push("threes");
+                      shortChoices.push("3");
+                      shortChoices.push("three");}
+      if(value == 4) {shortChoices.push("fours");
+                      shortChoices.push("four");
+                      shortChoices.push("4");}
+      if(value == 5) {shortChoices.push("fives");
+                      shortChoices.push("five");
+                      shortChoices.push("5");}
+      if(value == 6) {shortChoices.push("sixes");
+                      shortChoices.push("six");
+                      shortChoices.push("6");}
+      if(value == 7) {shortChoices.push("sevens");
+                      shortChoices.push("seven");
+                      shortChoices.push("7")}
+      if(value == 8) {shortChoices.push("eights");
+                      shortChoices.push("eight");
+                      shortChoices.push("8");}
+      if(value == 9) {shortChoices.push("nines");
+                      shortChoices.push("nine");
+                      shortChoices.push("9");}
+      if(value == 10) {shortChoices.push("tens");}
+      if(value == 11) {shortChoices.push("jacks");}
+      if(value == 12) {shortChoices.push("queens");}
+      if(value == 13) {shortChoices.push("kings");}
+    }
+    commands = shortChoices;
+  }
