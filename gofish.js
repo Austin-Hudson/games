@@ -1,5 +1,7 @@
 
 // initializing game variables
+// did go fish based on the rules from https://www.pagat.com/quartet/gofish.html
+// as of now its' only a two player game, so each player gets 7 cards each
 var SpeechRecognition = window.webkitSpeechRecognition ||   //prefixes for cross-browser compatability
                         window.mozSpeechRecognition    ||
                         window.msSpeechRecognition     ||
@@ -7,6 +9,9 @@ var SpeechRecognition = window.webkitSpeechRecognition ||   //prefixes for cross
                         window.SpeechRecognition,
     recognition       = new SpeechRecognition(),
     deck              = new Deck(),
+    numOfPlayers      = 2,
+    handSize          = 7,
+    books             = [],
     development       = true,
     inProgress        = false;
 
@@ -23,6 +28,8 @@ function start(){
   deck.createDeck();
   //shuffle deck
   deck.shuffle();
+  //deal to the number of players
+  deck.dealToNPlayers(numOfPlayers, handSize)
   //the game has started
   inProgress = true;
   //hide the start button
@@ -63,8 +70,37 @@ function speechResult() {
      dev.innerHTML = "";
      dev.innerHTML = "Last speech recognition result: <span class='italics'>" + result + "</span>";
    }
+
+   var card = checkForMatch(result);
+   if (card == "gameover") {
+     recognition.stop();
+     inProgress = false;
+   } else if (card) {
+     playTurn(card);
+   }
    };
  }
+ /*
+  This function plays the card
+ */
+ function playTurn(card){
+
+ }
+
+/*
+ This function looks to see if they want to ask the
+ computer for a certain card
+*/
+ function checkForMatch(card) {
+  var result = false;
+  for (var i = 0; i < commands.length; i++) {
+    if (commands[i] == card) {
+      console.log("Match found with command: ", commands[i]);
+      result = scene.results[i];
+    }
+  }
+  return result;
+}
 /*
  This function starts the game
 */
