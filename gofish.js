@@ -144,14 +144,24 @@ function speechResult() {
         renderOutcome(guess);
         turn = false;
       }
-      // else { //turn false is computer
-      //   guess = searchForCard(card,hands[0]); //player 1 hand
-      //   renderOutcome(guess);
-      //   turn = true;
-      // }
+      else { //turn false is computer
+        var compGuess = computerGuess(hands[0]);
+        console.log(hands[1][compGuess].value);
+        displayChoice(hands[1][compGuess].value);
+        guess = searchForCard(hands[1][compGuess].value,hands[0]); //player 1 hand
+        renderOutcome(guess);
+        turn = true;
+      }
 
       renderCards(hands);
 
+ }
+ /*
+  This function is for the computer and choose a random guess based on their cards
+ */
+ function computerGuess(hand){
+   var size = hand.length-1;
+   return randomIndex = Math.floor(Math.random() * size);
  }
 /*
  This function takes what they said and get the value
@@ -178,7 +188,12 @@ function convertTextToValue(card){
  This function searches for the card
 */
  function searchForCard(card,hand){
-   var value = convertTextToValue(card.toLowerCase());
+   //conver to string if its a number
+   if (typeof card == "number")
+          card = card.toString();
+  else {
+    var value = convertTextToValue(card);
+  }
    for(var i = 0; i < hand.length; i++){
      if(value == hand[i].value){
        //add and remove to respected hands
@@ -203,19 +218,40 @@ function convertTextToValue(card){
    var player;
    var display = document.getElementById("outcome");
    var outcome = document.createElement("p");
+
+   var para = document.querySelector("p");
+   if(para != null) { outcome.innerText = "";}
+
    //get who the player is
    if(turn) { player = "Player 1";}
    else {player = "Computer";}
 
    if(guess){
      var content = player + " guessed correctly";
+     outcome.innerHTML = "";
      outcome.innerText = content;
+     display.appendChild(outcome);
    }
-   else{
+   else {
+     if(turn) {
+       player = "Computer";
+       var card = deck.deal();
+       var c = new Card(card[0].value, card[0].suit);
+       hands[0].push(c);
+
+     }
+     else {
+       player = "Player 1";
+       var card = deck.deal();
+       var c = new Card(card[0].value, card[0].suit);
+       hands[1].push(c);
+     }
      var content = player + " says GoFish!";
+     outcome.innerText = ""
      outcome.innerText = content;
+     display.appendChild(outcome);
    }
-   display.appendChild(outcome);
+
  }
  /*
   This function displays what the user said
