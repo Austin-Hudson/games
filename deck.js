@@ -95,6 +95,7 @@ Deck.prototype.dealToNPlayers = function(numPlayers, handSize){
       //to deal by the the total amount of players
       var player = i % numPlayers;
       hands[player].push(this.deck[i]);
+      this.deal();
     }
   }
   return hands;

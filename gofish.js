@@ -11,7 +11,9 @@ var SpeechRecognition = window.webkitSpeechRecognition ||   //prefixes for cross
     deck              = new Deck(),
     numOfPlayers      = 2,
     handSize          = 7,
+    hands             = [],
     books             = [],
+    commands          =[],
     development       = true,
     inProgress        = false;
 
@@ -29,7 +31,9 @@ function start(){
   //shuffle deck
   deck.shuffle();
   //deal to the number of players
-  deck.dealToNPlayers(numOfPlayers, handSize)
+  hands = deck.dealToNPlayers(numOfPlayers, handSize)
+  //create the books arrays for each number of players
+  createBooksForNPlayers(numOfPlayers);
   //the game has started
   inProgress = true;
   //hide the start button
@@ -38,6 +42,17 @@ function start(){
   initializeRecognition();
   //start the game
   playGame();
+
+}
+
+/*
+  This function creates a books array for all the players
+*/
+function createBooksForNPlayers(numOfPlayers){
+  for(var i = 0; i < numOfPlayers; i++)
+  {
+    books[i] = [];
+  }
 }
 
 /*
