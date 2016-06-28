@@ -41,6 +41,10 @@ Deck.prototype.createDeck = function(){
   }
 }
 
+Deck.prototype.getSize = function(){
+  return this.length;
+}
+
 /*
 This function shuffles the deck
 */

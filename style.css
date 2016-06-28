@@ -2,8 +2,33 @@
   display: none;
 }
 
-img {
+.card {
   width: 75px;
   height: 100px;
-  padding: 5px; 
+  padding: 5px;
+}
+
+#deck {
+  display: flex;
+  align-items: flex-start;
+}
+
+#player-hand{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-end;
+}
+#choice {
+  display: flex;
+  height: 100px;
+  width: 75px;
+  background: rgba(0,0,0,.1);
+  justify-content: center;
+  align-items: center;
+}
+
+
+h1 {
+  text-align: center;
 }

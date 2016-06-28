@@ -63,16 +63,27 @@ function createBooksForNPlayers(numOfPlayers){
 */
 function renderCards(hands){
   console.log(hands);
-  if(turn){
+
     var playerDiv = document.getElementById("player-hand");
-    //treat the first hand as the human player
+    //treat the first hand as the human player and render them
     for(var i = 0; i < hands[0].length; i++){
         var card = document.createElement("img");
         var dir = "cards/" + hands[0][i].suit + " " + hands[0][i].value + ".png";
         card.setAttribute("src", dir);
+        card.classList.add("card");
         playerDiv.appendChild(card);
       }
-  }
+
+    //render pile
+    if(deck.getSize() != 0){
+      var stock = document.getElementById("deck");
+      var image = document.createElement("img");
+      var dir = "cards/" + "_Back.png";
+      image.setAttribute("src", dir);
+      image.classList.add("card");
+      stock.appendChild(image);
+    }
+    //render computer hand
 }
 
 /*
