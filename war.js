@@ -15,15 +15,16 @@ startButton.addEventListener('click', function() {
   start();
 });
 
-var page = document.querySelector("html");
-page.addEventListener("click", function(){
-    makeMove();
-});
 
 /*
 This function starts the game
 */
 function start(){
+  //listener
+  var page = document.querySelector("html");
+  page.addEventListener("click", function(){
+      makeMove();
+  });
   //create the deck of 52 cards
   war.createDeck();
   //shuffle deck
@@ -132,9 +133,12 @@ function makeMove(){
     renderMove(card);
     checkMoves();
     turn = true;
-
   }
-}
+ }
+ //else game over
+ else {
+   endGame();
+ }
 }
 
 /*
