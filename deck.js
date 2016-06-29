@@ -92,7 +92,6 @@ Deck.prototype.dealToNPlayers = function(numPlayers, handSize){
   //the total amount of cards that needs to be dealt to all players
   var totalCards = numPlayers * handSize;
   //determine if you have enough cards
-  console.log(this.deck);
   if(totalCards <= this.deck.length){
     //deal round-robin to all the players
     for(var i = 0; i < totalCards; i++){

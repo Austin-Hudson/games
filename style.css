@@ -34,6 +34,12 @@
   margin-bottom: 20px;
   justify-content:  space-between;
 }
+.war-decks {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+  align-items center;
+}
 
 #player-1, #player-1-score {
   display: flex;
@@ -47,6 +53,7 @@
   justify-content: flex-end;
   margin-right: 20%;
 }
+
 
 #startgame{
   margin-left: 47%;

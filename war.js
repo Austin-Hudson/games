@@ -3,8 +3,11 @@ var war             = new Deck(),
     numOfPlayers    = 2,
     handSize        = 26,
     playerOneScore  = 0,
-    playerTwoScore  = 0
-    turn            = true;
+    playerTwoScore  = 0,
+    moves           = []
+    turn            = true
+    inProgress      = false;
+
 
 //get the start button and make an event listener for it
 var startButton = document.querySelector('button');
@@ -33,6 +36,10 @@ function start(){
   renderDecks();
   //hide button
   startButton.classList.add("hidden");
+  //set the progress to be true
+  inProgress = true;
+  //start the game
+  startGame();
 }
 
 /*
@@ -58,32 +65,128 @@ function renderScores(){
  This function renders the cards
 */
 function renderDecks(){
-  console.log(hands[0]);
   //render each decks
-  // if(hands[0][0].getSize() != 0){
-  //   var playerOneDeck = document.getElementById("deck");
-  //   playerOneDeck.innerHTML = "";
-  //   var image = document.createElement("img");
-  //   var dir = "cards/" + "_Back.png";
-  //   image.setAttribute("src", dir);
-  //   image.classList.add("card");
-  //   playerTwoDeck.appendChild(image);
-  // }
-  //
-  // if(hands[1][0].getSize() != 0){
-  //   var playerTwoDeck = document.getElementById("deck");
-  //   playerTwoDeck.innerHTML = "";
-  //   var image = document.createElement("img");
-  //   var dir = "cards/" + "_Back.png";
-  //   image.setAttribute("src", dir);
-  //   image.classList.add("card");
-  //   playerTwoDeck.appendChild(image);
-  // }
+  if(hands[0].length != 0){
+    var playerOneDeck = document.getElementById("deck-one");
+    playerOneDeck.innerHTML = "";
+    var image = document.createElement("img");
+    var dir = "cards/" + "_Back.png";
+    image.setAttribute("src", dir);
+    image.classList.add("card");
+    playerOneDeck.appendChild(image);
+  }
 
+  if(hands[1].length != 0){
+    var playerTwoDeck = document.getElementById("deck-two");
+    playerTwoDeck.innerHTML = "";
+    var image = document.createElement("img");
+    var dir = "cards/" + "_Back.png";
+    image.setAttribute("src", dir);
+    image.classList.add("card");
+    playerTwoDeck.appendChild(image);
+  }
+
+}
+
+/*
+ This function renders the move
+*/
+function renderMove(card){
+  if(turn){
+    var c = document.createElement("img");
+    var value = document.getElementById("deck-one-value");
+    value.innerHTML = "";
+    var dir = "cards/" + card.suit + " " + card.value + ".png";
+    c.setAttribute("src", dir);
+    c.classList.add("card");
+    value.appendChild(c);
+  }
+  else{
+    var c = document.createElement("img");
+    var value = document.getElementById("deck-two-value");
+    value.innerHTML = "";
+    var dir = "cards/" + card.suit + " " + card.value + ".png";
+    c.setAttribute("src", dir);
+    c.classList.add("card");
+    value.appendChild(c);
+  }
 }
 /*
   This funciton makes the move
 */
 function makeMove(){
+
+  if (hands[0].length != 0 || hands[1].length !=0)
+  {
+  //player 1 turn
+  if(turn){
+    var card = hands[0].shift();
+    moves[0] = card;
+    renderMove(card);
+    turn = false;
+  }
+  //player 2 turn
+  else {
+    var card = hands[1].shift();
+    moves[1] = card;
+    renderMove(card);
+    checkMoves();
+    turn = true;
+
+  }
+}
+}
+
+/*
+ This function checks the moves and adjusts the scores
+*/
+function checkMoves(card) {
+  var value = moves[0].value;
+  var valueTwo = moves[1].value;
+
+  //change the value of the ace value
+  if(value == 1) {value = 14;}
+  else if(valueTwo == 1) {valueTwo = 14;}
+  //console.log(value + " " + valueTwo);
+
+  if(value > valueTwo){
+    playerOneScore++;
+    hands[0].push(moves[1]);
+  }
+  else if(value < valueTwo){
+    playerTwoScore++;
+    hands[1].push(moves[0])
+  }
+
+  else if(value == valueTwo){
+    declareWar();
+  }
+
+  renderScores();
+}
+
+/*
+ This function does war
+*/
+var declareWar = function() {
+
+  console.log("war");
+}
+
+/*
+ This function starts the game
+*/
+function startGame() {
+  if (inProgress) {
+
+  }
+  else {
+
+  }
+}
+/*
+ THis function ends the game
+*/
+function endGame(){
 
 }
