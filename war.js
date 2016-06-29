@@ -7,6 +7,7 @@ var war             = new Deck(),
     playerTwoScore  = 0,
     moves           = []
     turn            = true
+    isWar           = false,
     inProgress      = false;
 
 
@@ -94,8 +95,9 @@ function renderDecks(){
  This function renders the move
 */
 function renderMove(card){
+
   if(hands[0].length != 0){
-    if(turn){
+    if(turn && !isWar){
       var c = document.createElement("img");
       var value = document.getElementById("deck-one-value");
       value.innerHTML = "";
@@ -104,9 +106,19 @@ function renderMove(card){
       c.classList.add("card");
       value.appendChild(c);
     }
-}
+     else if(isWar){
+      var c = document.createElement("img");
+      var value = document.getElementById("deck-one-value");
+      value.innerHTML = "";
+      dir = "cards/" + moves[0].suit + " " + moves[0].value + ".png";
+      c.setAttribute("src", dir);
+      c.classList.add("card");
+      value.appendChild(c);
+    }
+
+  }
     if(hands[1].length != 0){
-      if(!turn){
+      if(!turn && !isWar){
         var c = document.createElement("img");
         var value = document.getElementById("deck-two-value");
         value.innerHTML = "";
@@ -115,6 +127,15 @@ function renderMove(card){
         c.classList.add("card");
         value.appendChild(c);
     }
+      else if(isWar){
+        var c = document.createElement("img");
+        var value = document.getElementById("deck-two-value");
+        value.innerHTML = "";
+        dir = "cards/" + moves[1].suit + " " + moves[1].value + ".png";
+        c.setAttribute("src", dir);
+        c.classList.add("card");
+        value.appendChild(c);
+      }
   }
 }
 
@@ -136,6 +157,15 @@ function renderWar(){
     //
   }
 
+}
+/*
+ This funciton removes the war element
+*/
+function removeWar(){
+  var w = document.querySelector(".war");
+  if(w != null && w.length != 0){
+    w.innerHTML = "";
+  }
 }
 /*
   This funciton makes the move
@@ -161,9 +191,13 @@ function makeMove(){
       turn = true;
     }
    }
+   else {
+     inProgress = false;
+   }
  }
  //else game over
  else {
+   inProgress = false;
    endGame();
  }
 }
@@ -178,23 +212,27 @@ function checkMoves(card) {
   //change the value of the ace value
   if(value == 1) {value = 14;}
   else if(valueTwo == 1) {valueTwo = 14;}
-  //console.log(value + " " + valueTwo);
+  console.log(value + " " + valueTwo);
 
   if(value > valueTwo){
     playerOneScore++;
     hands[0].splice(hands[0].length,0,moves[0]);
     hands[0].splice(hands[0].length,0,moves[1]);
+    removeWar();
   }
   else if(value < valueTwo){
     playerTwoScore++;
     hands[1].splice(hands[1].length, 0, moves[0]);
     hands[1].splice(hands[1].length,0, moves[1]);
-
+    removeWar();
   }
-  //else if(value == valueTwo){
+  else if(value == valueTwo){
+    isWar = true;
     declareWar();
     renderWar();
-  //}
+    renderMove();
+    isWar = false;
+  }
 
   renderScores();
 }
@@ -203,8 +241,7 @@ function checkMoves(card) {
  This function does war when there is war
 */
 var declareWar = function() {
-
-  console.log(hands[0]);
+  console.log("WARRRR!");
   //flip first card for each player
   var flippedCard = hands[0][0];
   hands[0] = hands[0].slice(1);
@@ -218,6 +255,7 @@ var declareWar = function() {
 
   var card2 = hands[1].shift();
   moves[1] = card2;
+
 }
 
 /*
@@ -228,12 +266,30 @@ function startGame() {
 
   }
   else {
-
+      endGame();
   }
 }
 /*
  THis function ends the game
 */
 function endGame(){
+    var winner;
+    if(playerOneScore > playerTwoScore){
+      winner = "Player 1 wins!";
+    }
+    else {
+      winner = "Player 2 wins!";
+    }
+
+    var r = document.querySelector(".winner")
+
+    if(r.length != 0 && r != null){
+      var b = document.querySelector("body");
+      var result = document.createElement("div");
+      result.classList.add("winner");
+      var w = document.createTextNode(winner);
+      result.appendChild(w);
+      b.appendChild(result);
+   }
 
 }

@@ -40,10 +40,11 @@
   margin-top: 50px;
   align-items center;
 }
-.war {
+.war, .winner{
   text-align: center;
   margin: 50px;
 }
+
 
 #player-1, #player-1-score {
   display: flex;
