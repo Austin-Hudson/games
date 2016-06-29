@@ -14,7 +14,7 @@ var SpeechRecognition = window.webkitSpeechRecognition ||   //prefixes for cross
     hands             = [],
     books             = [],
     commands          = [],
-    turn              = true;
+    turn              = true,
     development       = true,
     inProgress        = false;
 
@@ -39,6 +39,9 @@ function start(){
   inProgress = true;
   //hide the start button
   startButton.classList.add("hidden");
+  //take out the hidden choices
+  var choices = document.querySelector("#choice");
+  choices.style.display = "flex";
   //initalize the sound recognition
   initializeRecognition();
   //render the cards
@@ -216,10 +219,10 @@ function speechResult() {
           turn = false;
           addBook(hands[0]);
           var nCard = deck.deal();
-          var c = new Card(nCard[0].value,nCard[0].suit);
-          if(!hands[0].includes(c)){
-               hands[0].push(c);
-             }
+          var c = new Card(nCard.value,nCard.suit);
+          // if(!hands[0].includes(c)){
+          //      hands[0].push(c);
+          //    }
           makeShortChoices();
           renderOutcome(guess);
 
@@ -242,14 +245,14 @@ function speechResult() {
           turn = true;
           addBook(hands[1]);
           var card = deck.deal();
-          var c = new Card(card[0].value, card[0].suit);
-          if(!hands[1].includes(c)){
-               hands[1].push(c);
-             }
+          var c = new Card(card.value, card.suit);
+          // if(!hands[1].includes(c)){
+          //      hands[1].push(c);
+          //    }
           renderOutcome(guess);
         }
       }
-      console.log(hands[1]);
+      // console.log(hands[1]);
       renderCards(hands);
 
  }
@@ -269,8 +272,8 @@ function speechResult() {
   }
 
    for(var i = 0; i < hand.length; i++){
-      console.log("V:" + value);
-      console.log(hand[i].value);
+      // console.log("V:" + value);
+      // console.log(hand[i].value);
      if(value == hand[i].value){
        //add and remove to respected hands
        if(turn) {

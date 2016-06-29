@@ -18,8 +18,9 @@
 }
 .player-feed {
   display: flex;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 40px;
+  align-content: space-around;
+  justify-content: space-around;
 }
 .players-labels {
   display: flex;
@@ -62,6 +63,7 @@
 
 #startgame{
   margin-left: 47%;
+  margin-top: 10%;
   height: 40px;
   length: 100px;
 }
@@ -88,9 +90,6 @@
   align-items: center;
   align-self: flex-end;
   flex-wrap: wrap;
-  margin-left: 20%;
-  margin-right: 20%;
-  margin-top: 20%;
 
 }
 
@@ -101,15 +100,20 @@
   background: rgba(0,0,0,.1);
   justify-content: center;
   align-items: center;
-  margin-left: 80%;
+  margin-left: 40%;
+  display: none;
 }
 #outcome{
   display: flex;
   text-align: center;
   justify-content: center;
-  margin-left: 40%;
   font-size: 20px;
+  margin-left: 40%;
   color: green;
+}
+#speech {
+  color: white;
+  margin-top: 150px;
 }
 
 h2{
