@@ -54,7 +54,7 @@ Deck.prototype.shuffle = function(){
   var temp;
   for(var i = 0; i < this.deck.length; i++){
     //pick a random index from 0 to deck.length - 1
-    randomIndex = Math.floor(Math.random() * this.deck.length-1);
+    randomIndex = Math.floor(Math.random() * this.deck.length);
 
     //basic swap to switch positions
     temp = this.deck[i];
@@ -74,7 +74,7 @@ Deck.prototype.deal = function(){
 
   //return the first element of the deck that is removed
   else {
-    return this.deck.splice(0, 1);
+    return this.deck.shift();
   }
 }
 
@@ -92,14 +92,14 @@ Deck.prototype.dealToNPlayers = function(numPlayers, handSize){
   //the total amount of cards that needs to be dealt to all players
   var totalCards = numPlayers * handSize;
   //determine if you have enough cards
+  console.log(this.deck);
   if(totalCards <= this.deck.length){
     //deal round-robin to all the players
     for(var i = 0; i < totalCards; i++){
       // player to deal to is calculated by taking the mod of the i-th card from the total cards
       //to deal by the the total amount of players
       var player = i % numPlayers;
-      hands[player].push(this.deck[i]);
-      this.deal();
+      hands[player].push(this.deal());
     }
   }
   return hands;
