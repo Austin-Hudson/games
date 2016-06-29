@@ -1,3 +1,4 @@
+//use these rules https://www.pagat.com/war/war.html
 var war             = new Deck(),
     hands           = [],
     numOfPlayers    = 2,
@@ -116,6 +117,26 @@ function renderMove(card){
     }
   }
 }
+
+/*
+ This function renders the war
+*/
+function renderWar(){
+  var body = document.querySelector("body");
+  var isW = document.querySelector(".war");
+
+  if(isW == null || isW.length == 0){
+    var w = document.createElement("div");
+    w.classList.add("war");
+    var content = document.createTextNode("WAR!");
+    w.appendChild(content);
+    body.appendChild(w);
+  }
+  else {
+    //
+  }
+
+}
 /*
   This funciton makes the move
 */
@@ -169,22 +190,34 @@ function checkMoves(card) {
     hands[1].splice(hands[1].length, 0, moves[0]);
     hands[1].splice(hands[1].length,0, moves[1]);
 
-
   }
-  else if(value == valueTwo){
+  //else if(value == valueTwo){
     declareWar();
-  }
+    renderWar();
+  //}
 
-  console.log(hands);
   renderScores();
 }
 
 /*
- This function does war
+ This function does war when there is war
 */
 var declareWar = function() {
 
-  console.log("war");
+  console.log(hands[0]);
+  //flip first card for each player
+  var flippedCard = hands[0][0];
+  hands[0] = hands[0].slice(1);
+
+  var flippCard2 = hands[1][0];
+  hands[1] = hands[1].slice(1);
+
+  //draw the next card
+  var card = hands[0].shift();
+  moves[0] = card;
+
+  var card2 = hands[1].shift();
+  moves[1] = card2;
 }
 
 /*
