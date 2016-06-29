@@ -101,6 +101,46 @@ function renderCards(hands){
 }
 
 /*
+This function renders the outcome
+*/
+function renderOutcome(guess){
+  var player;
+  var display = document.getElementById("outcome");
+
+
+  var para = document.querySelector("p");
+  if(para != null) { para.innerText = "";}
+  else {
+   var outcome = document.createElement("p");
+  }
+
+  //get who the player is
+  if(turn) { player = "Player 1";}
+  else {player = "Computer";}
+
+  if(guess){
+    var content = player + " guessed correctly";
+    outcome.innerText = content;
+    //display.appendChild(outcome);
+  }
+  else {
+   //  if(turn) {
+   //    player = "Computer";
+   //  }
+   //  else {
+   //    player = "Player 1";
+   //  }
+    var content = player + " says GoFish!";
+
+  }
+
+  outcome = document.getElementById("outcome");
+  outcome.innerText = "";
+  outcome.innerText = content;
+
+}
+
+/*
  This function sets up parameters for the speech recognition and starts it listening
 */
 function initializeRecognition() {
@@ -140,6 +180,20 @@ function speechResult() {
      playTurn(card);
    }
    };
+ }
+ /*
+  This function looks to see if they want to ask the
+  computer for a certain card that exists in their hand
+ */
+  function checkForMatch(card) {
+
+   var result = false;
+   for (var i = 0; i < commands.length; i++) {
+     if (commands[i] == card.toLowerCase()) {
+       return card;
+     }
+   }
+   return result;
  }
  /*
   This function plays the card
@@ -199,33 +253,7 @@ function speechResult() {
       renderCards(hands);
 
  }
- /*
-  This function is for the computer and choose a random guess based on their cards
- */
- function computerGuess(hand){
-   var size = hand.length-1;
-   return randomIndex = Math.floor(Math.random() * size);
- }
-/*
- This function takes what they said and get the value
-*/
-function convertTextToValue(card){
-     if(card =="ace" || card == "aces"){return 1;}
-     if(card =="two" || card == "twos" || card == "2") {return 2;}
-     if(card =="three" || card == "threes" || card == "3") {return 3;}
-     if(card =="four" || card == "fours" || card == "4") {return 4;}
-     if(card =="fives" || card == "five" || card == "5") {return 5;}
-     if(card =="six" || card == "sixes" || card == "6") {return 6;}
-     if(card =="seven" || card == "sevens" || card == "7") {return 7;}
-     if(card =="eight" || card == "eights" || card == "8") {return 8;}
-     if(card =="nine" || card == "nines" || card == "9") {return 9;}
-     if(card =="ten" || card == "tens" || card == "10") {return 10;}
-     if(card == "jacks" || card == "jack") {return 11;}
-     if(card == "queens"|| card == "queen") {return 12;}
-     if(card == "kings" || card == "king") {return 13;}
 
-
-}
 
 /*
  This function searches for the card
@@ -259,45 +287,7 @@ function convertTextToValue(card){
    return false;
  }
 
- /*
- This function renders the outcome
- */
- function renderOutcome(guess){
-   var player;
-   var display = document.getElementById("outcome");
 
-
-   var para = document.querySelector("p");
-   if(para != null) { para.innerText = "";}
-   else {
-    var outcome = document.createElement("p");
-   }
-
-   //get who the player is
-   if(turn) { player = "Player 1";}
-   else {player = "Computer";}
-
-   if(guess){
-     var content = player + " guessed correctly";
-     outcome.innerText = content;
-     //display.appendChild(outcome);
-   }
-   else {
-    //  if(turn) {
-    //    player = "Computer";
-    //  }
-    //  else {
-    //    player = "Player 1";
-    //  }
-     var content = player + " says GoFish!";
-
-   }
-
-   outcome = document.getElementById("outcome");
-   outcome.innerText = "";
-   outcome.innerText = content;
-
- }
  /*
   This function displays what the user said
  */
@@ -307,19 +297,13 @@ function displayChoice(card){
 
 }
 /*
- This function looks to see if they want to ask the
- computer for a certain card that exists in their hand
+ This function is for the computer and choose a random guess based on their cards
 */
- function checkForMatch(card) {
-
-  var result = false;
-  for (var i = 0; i < commands.length; i++) {
-    if (commands[i] == card.toLowerCase()) {
-      return card;
-    }
-  }
-  return result;
+function computerGuess(hand){
+  var size = hand.length-1;
+  return randomIndex = Math.floor(Math.random() * size);
 }
+
 /*
  This function starts the game
 */
@@ -365,6 +349,26 @@ function removeFourOfKind(hand, value){
        }
      }
   }
+
+}
+/*
+ This function takes what they said and get the value
+*/
+function convertTextToValue(card){
+     if(card =="ace" || card == "aces"){return 1;}
+     if(card =="two" || card == "twos" || card == "2") {return 2;}
+     if(card =="three" || card == "threes" || card == "3") {return 3;}
+     if(card =="four" || card == "fours" || card == "4") {return 4;}
+     if(card =="fives" || card == "five" || card == "5") {return 5;}
+     if(card =="six" || card == "sixes" || card == "6") {return 6;}
+     if(card =="seven" || card == "sevens" || card == "7") {return 7;}
+     if(card =="eight" || card == "eights" || card == "8") {return 8;}
+     if(card =="nine" || card == "nines" || card == "9") {return 9;}
+     if(card =="ten" || card == "tens" || card == "10") {return 10;}
+     if(card == "jacks" || card == "jack") {return 11;}
+     if(card == "queens"|| card == "queen") {return 12;}
+     if(card == "kings" || card == "king") {return 13;}
+
 
 }
 

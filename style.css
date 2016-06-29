@@ -1,3 +1,12 @@
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: black;
+}
+
 .hidden {
   display: none;
 }
@@ -7,7 +16,17 @@
   height: 100px;
   padding: 5px;
 }
+.player-feed {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#player-1 {
 
+}
+#player-2 {
+  
+}
 #startgame{
   margin-left: 47%;
   height: 40px;
@@ -16,8 +35,8 @@
 
 #deck {
   display: flex;
-  justify-content: center;
-
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 #player-hand{
@@ -36,6 +55,8 @@
   align-items: center;
   align-self: flex-end;
   flex-wrap: wrap;
+  margin-left: 20%;
+  margin-right: 20%;
 
 }
 
@@ -46,21 +67,25 @@
   background: rgba(0,0,0,.1);
   justify-content: center;
   align-items: center;
-  margin-left: 47%;
+  margin-left: 80%;
 }
 #outcome{
+  display: flex;
   text-align: center;
-  margin: 15px;
+  justify-content: center;
+  margin-left: 40%;
   font-size: 20px;
   color: green;
 }
 
-h1 {
-  text-align: center;
+h2{
+  margin-top: 10px;
+  margin-left: 5px;
+  color: white;
 }
 
 body{
-  background: lightblue;
+  background: white;
   font-family: 'Oswald', sans-serif;
 }
 
@@ -72,7 +97,7 @@ a{
   align-content: center;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+
 }
 a:hover{
   color: white;
