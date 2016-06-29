@@ -160,8 +160,8 @@ function speechResult() {
         if(!guess){
           turn = false;
           addBook(hands[0]);
-          var card = deck.deal();
-          var c = new Card(card[0].value, card[0].suit);
+          var nCard = deck.deal();
+          var c = new Card(nCard[0].value,nCard[0].suit);
           if(!hands[0].includes(c)){
                hands[0].push(c);
              }
