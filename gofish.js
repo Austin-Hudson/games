@@ -70,6 +70,7 @@ function renderCards(hands){
     var computerDiv = document.getElementById("computer-hand");
     playerDiv.innerHTML = "";
     computerDiv.innerHTML = "";
+
     //treat the first hand as the human player and render them
     for(var i = 0; i < hands[0].length; i++){
         var card = document.createElement("img");
