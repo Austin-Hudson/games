@@ -131,7 +131,8 @@ function speechResult() {
    }
 
    var card = checkForMatch(result);
-   if (card == "gameover") {
+   if (deck.length == 0 || hands[0].length == 0 || hands[1].length == 0) {
+     console.log("End Game");
      recognition.stop();
      inProgress = false;
    } else if (card) {
@@ -154,25 +155,46 @@ function speechResult() {
           renderOutcome(guess);
           speechResult();
           guess = searchForCard(card, hands[1]); //computer hand
-          console.log(hands[1]);
+          addBook(hands[0]);
         }
-        renderOutcome(guess);
-        turn = false;
+        if(!guess){
+          turn = false;
+          addBook(hands[0]);
+          var card = deck.deal();
+          var c = new Card(card[0].value, card[0].suit);
+          if(!hands[0].includes(c)){
+               hands[0].push(c);
+             }
+          makeShortChoices();
+          renderOutcome(guess);
+
+        }
       }
       else { //turn false is computer
-        var compGuess = computerGuess(hands[0]);
+        var compGuess = computerGuess(hands[1]);
         displayChoice(hands[1][compGuess].value);
         guess = searchForCard(hands[1][compGuess].value,hands[0]); //player 1 hand
         while(guess){
           compGuess = computerGuess(hands[0]);
           displayChoice(hands[1][compGuess].value);
+        //  console.log(hands[1][compGuess].value);
           guess = searchForCard(hands[1][compGuess].value,hands[0]); //player 1 hand
           renderOutcome(guess);
+          addBook(hands[1]);
         }
-        renderOutcome(guess);
-        turn = true;
+        if(!guess){
+        //  console.log("guess: " + hands[1][compGuess].value);
+          turn = true;
+          addBook(hands[1]);
+          var card = deck.deal();
+          var c = new Card(card[0].value, card[0].suit);
+          if(!hands[1].includes(c)){
+               hands[1].push(c);
+             }
+          renderOutcome(guess);
+        }
       }
-
+      console.log(hands[1]);
       renderCards(hands);
 
  }
@@ -188,15 +210,15 @@ function speechResult() {
 */
 function convertTextToValue(card){
      if(card =="ace" || card == "aces"){return 1;}
-     if(card =="two" || card == "twos" || card == 2) {return 2;}
-     if(card =="three" || card == "threes" || card == 3) {return 3;}
-     if(card =="four" || card == "fours" || card == 4) {return 4;}
-     if(card =="fives" || card == "five" || card == 5) {return 5;}
-     if(card =="six" || card == "sixes" || card == 6) {return 6;}
-     if(card =="seven" || card == "sevens" || card == 7) {return 7;}
-     if(card =="eight" || card == "eights" || card == 8) {return 8;}
-     if(card =="nine" || card == "nines" || card == 9) {return 9;}
-     if(card =="ten" || card == "tens" || card == 10) {return 10;}
+     if(card =="two" || card == "twos" || card == "2") {return 2;}
+     if(card =="three" || card == "threes" || card == "3") {return 3;}
+     if(card =="four" || card == "fours" || card == "4") {return 4;}
+     if(card =="fives" || card == "five" || card == "5") {return 5;}
+     if(card =="six" || card == "sixes" || card == "6") {return 6;}
+     if(card =="seven" || card == "sevens" || card == "7") {return 7;}
+     if(card =="eight" || card == "eights" || card == "8") {return 8;}
+     if(card =="nine" || card == "nines" || card == "9") {return 9;}
+     if(card =="ten" || card == "tens" || card == "10") {return 10;}
      if(card == "jacks" || card == "jack") {return 11;}
      if(card == "queens"|| card == "queen") {return 12;}
      if(card == "kings" || card == "king") {return 13;}
@@ -209,12 +231,17 @@ function convertTextToValue(card){
 */
  function searchForCard(card,hand){
    //conver to string if its a number
-   if (typeof card == "number")
-          card = card.toString();
-  else {
-    var value = convertTextToValue(card);
+    if(card =="1"|| card == "2" || card == "3" || card == "4" || card == "5" || card == "6" ||
+  card == "7" || card == "8" || card == "9" || card == "10" || card == "11" || card == "12"|| card == "13") {
+      var value = card;
+   }
+   else {
+    var value = convertTextToValue(card.toLowerCase());
   }
+
    for(var i = 0; i < hand.length; i++){
+      console.log("V:" + value);
+      console.log(hand[i].value);
      if(value == hand[i].value){
        //add and remove to respected hands
        if(turn) {
@@ -222,7 +249,7 @@ function convertTextToValue(card){
          this.hands[1].splice(i, 1);
        }
        else {
-         this.hands[1].push(hand[1]);
+         this.hands[1].push(hand[i]);
          this.hands[0].splice(i,1);
        }
        return true;
@@ -252,22 +279,15 @@ function convertTextToValue(card){
    if(guess){
      var content = player + " guessed correctly";
      outcome.innerText = content;
-     display.appendChild(outcome);
+     //display.appendChild(outcome);
    }
    else {
-     if(turn) {
-       player = "Computer";
-       var card = deck.deal();
-       var c = new Card(card[0].value, card[0].suit);
-       hands[0].push(c);
-
-     }
-     else {
-       player = "Player 1";
-       var card = deck.deal();
-       var c = new Card(card[0].value, card[0].suit);
-       hands[1].push(c);
-     }
+    //  if(turn) {
+    //    player = "Computer";
+    //  }
+    //  else {
+    //    player = "Player 1";
+    //  }
      var content = player + " says GoFish!";
 
    }
@@ -308,6 +328,43 @@ function playGame() {
   } else {
     endGame();
   }
+}
+
+/*
+ This function adds to the books to keep track of winner
+*/
+function addBook(hand){
+  var count = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+  for(var i = 0; i < hand.length; i++){
+      var value = hand[i].value;
+      count[value]++;
+  }
+  for(var i = 0; i < count.length; i++){
+    if(count[i] == 4) {
+      if(turn)
+        removeFourOfKind(this.hands[0], i);
+      else{
+        removeFourOfKind(this.hands[1], i);
+      }
+    }
+  }
+}
+
+/*
+This function removes the books in the hand
+*/
+function removeFourOfKind(hand, value){
+  for(var i = 0; i < hand.length; i++){
+     if(hand[i].value == value){
+       if(turn)
+         this.hands[0].splice(i, 1);
+       else{
+         this.hands[1].splice(i, 1);
+       }
+     }
+  }
+
 }
 
 /*
