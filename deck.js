@@ -31,12 +31,13 @@ Deck.prototype.constructor = Deck;
 This function creates the deck
 */
 Deck.prototype.createDeck = function(){
-  var index = 0;
+  // var index = 0;
   for(var i = 0; i < values.length; i++){
     for(var j = 0; j < suits.length; j++){
       var card = new Card(values[i], suits[j]);
-      this.deck[index] = card;
-      index++;
+      this.deck.push(card);
+      // this.deck[index] = card;
+      // index++;
     }
   }
 }

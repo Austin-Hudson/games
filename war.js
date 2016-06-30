@@ -8,7 +8,9 @@ var war             = new Deck(), //deck to be used
     moves           = [], //the current move that is in play
     turn            = true, //whose turn it is
     isWar           = false, //if there is war
-    inProgress      = false; //the state of the game
+    winnerPile      = [], //pile cards for the people that won the war
+    inProgress      = false, //the state of the game
+    winner;
 
 
 //get the start button and make an event listener for it
@@ -181,22 +183,23 @@ function removeWar(){
 function makeMove(){
   //only make the move if the game is in progress
   if(inProgress){
-    if (hands[0].length != 0 && hands[1].length !=0)
+    if (hands[0].length !== 0 && hands[1].length !== 0)
     {
     //player 1 turn
     if(turn){
       var card = hands[0].shift();
       moves[0] = card;
       renderMove(card);
-      turn = false;
+      turn = !turn;
     }
     //player 2 turn
     else if(!turn){
       var card = hands[1].shift();
       moves[1] = card;
       renderMove(card);
-      checkMoves();
-      turn = true;
+      winner = checkMoves();
+      giveToWinner();
+      turn = !turn;
     }
    }
    else {
@@ -218,30 +221,30 @@ function checkMoves(card) {
   var valueTwo = moves[1].value;
 
   //change the value of the ace value
-  if(value == 1) {value = 14;}
-  else if(valueTwo == 1) {valueTwo = 14;}
-  console.log(value + " " + valueTwo);
+  if(value === 1) {value = 14;}
+  else if(valueTwo === 1) {valueTwo = 14;}
   //if player one drew a higher value
   if(value > valueTwo){
     playerOneScore++;
-    hands[0].splice(hands[0].length,0,moves[0]);
-    hands[0].splice(hands[0].length,0,moves[1]);
+    hands[0].splice(hands[0].length, 0, moves[0]);
+    hands[0].splice(hands[0].length, 0, moves[1]);
     removeWar();
+    return 'player1'
   }//if the computer drew a higher value
   else if(value < valueTwo){
     playerTwoScore++;
     hands[1].splice(hands[1].length, 0, moves[0]);
-    hands[1].splice(hands[1].length,0, moves[1]);
+    hands[1].splice(hands[1].length, 0, moves[1]);
     removeWar();
+    return 'player2'
   } //if there is war
-  else if(value == valueTwo){
+  else if(value === valueTwo){
     isWar = true;
     declareWar();
     renderWar();
     renderMove();
     isWar = false;
   }
-
   renderScores();
 }
 
@@ -250,52 +253,69 @@ function checkMoves(card) {
 */
 var declareWar = function() {
   console.log("WARRRR!");
-    //check if they have enough cards to do war
-    if (hands[0].length > 1 && hands[1].length > 1){
-      //flip first card for each player
-      var flippedCard = hands[0][0];
-      hands[0] = hands[0].slice(1);
+  //check if they have enough cards to do war
+  if (hands[0].length > 1 && hands[1].length > 1){
 
-      var flippCard2 = hands[1][0];
-      hands[1] = hands[1].slice(1);
+    //Put current moves into winnerPile
+    winnerPile.push(moves);
 
-      //draw the next card
-      var card = hands[0].shift();
-      moves[0] = card;
+    //Put down one more card from each player
+    winnerPile.push(hands[0].shift());
+    winnerPile.push(hands[1].shift());
+    makeMove();
+    makeMove();
 
-      var card2 = hands[1].shift();
-      moves[1] = card2;
-    }
-    // if one of them has one card left just use that card
-    else if (hands[0].length == 1){
-      //draw the next card
-      var card = hands[0].shift();
-      moves[0] = card;
-    }
-    else if (hands[1].length == 1){
-      var card2 = hands[1].shift();
-      moves[1] = card2;
-    }
-    //there is war but the person has no more cards
-    else if(hands[0].length == 0){
-      console.log("Player 2 Wins!");
-    }
+    //push the next card to flip over
+    winnerPile.push(hands[0].shift());
+    winnerPile.push(hands[1].shift());
 
-    else if(hands[1].length == 0){
-      console.log("Player 1 Wins!");
-    }
+    //render it
+    renderMove(winnerPile[winnerPile.length - 1]);
+    renderMove(winnerPile[winnerPile.length - 2]);
 
   }
+  // if one of them has one card left just use that card
+  else if (hands[0].length == 1){
+    //draw the next card
+    var card = hands[0].shift();
+    moves[0] = card;
+  }
+  else if (hands[1].length == 1){
+    var card2 = hands[1].shift();
+    moves[1] = card2;
+  }
+  //there is war but the person has no more cards
+  else if(hands[0].length == 0){
+    console.log("Player 2 Wins!");
+  }
+
+  else if(hands[1].length == 0){
+    console.log("Player 1 Wins!");
+  }
+
+}
+
+/*
+ This function gives the card to win appropriate winner
+*/
+function giveToWinner() {
+  if(winner === 'player1' && winnerPile.length){
+    for(var i = 0; i < winnerPile.length; i++){
+      hands[0].push(winnerPile.shift());
+    }
+  } else if (winner === 'player2' && winnerPile.length) {
+    for(var i = 0; i < winnerPile.length; i++){
+      hands[1].push(winnerPile.shift());
+    }
+  }
+}
 
 /*
  This function starts the game
 */
 function startGame() {
-  if (inProgress) {
-
-  }
-  else {
-      endGame();
+  if (!inProgress) {
+    endGame();
   }
 }
 /*
