@@ -112,8 +112,9 @@
   color: green;
 }
 #speech {
-  color: white;
-  margin-top: 150px;
+  color: black;
+  position: absolute;
+  top: 100px;
 }
 
 h2{

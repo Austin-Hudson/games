@@ -179,6 +179,7 @@ function speechResult() {
      console.log("End Game");
      recognition.stop();
      inProgress = false;
+     endGame();
    } else if (card) {
      playTurn(card);
    }
@@ -352,6 +353,34 @@ function removeFourOfKind(hand, value){
        }
      }
   }
+
+}
+
+/*
+ This function ends the game
+*/
+function endGame() {
+  var winner;
+  var playerOneBook = books[0].length;
+  var playerTwoBook = books[1].length;
+
+  if(playerOneBook > playerTwoBook){
+    winner = "Player 1 wins!";
+  }
+  else {
+    winner = "Player 2 wins!";
+  }
+
+  var r = document.querySelector(".winner")
+
+  if(r.length != 0 && r != null){
+    var b = document.querySelector("body");
+    var result = document.createElement("div");
+    result.classList.add("winner");
+    var w = document.createTextNode(winner);
+    result.appendChild(w);
+    b.appendChild(result);
+ }
 
 }
 /*
