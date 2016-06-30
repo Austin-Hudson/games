@@ -76,7 +76,7 @@ function renderDecks(){
     var playerOneDeck = document.getElementById("deck-one");
     playerOneDeck.innerHTML = "";
     var image = document.createElement("img");
-    var dir = "cards/" + "_Back.png";
+    var dir = "cards/" + "Back.png";
     image.setAttribute("src", dir);
     image.classList.add("card");
     playerOneDeck.appendChild(image);
@@ -86,7 +86,7 @@ function renderDecks(){
     var playerTwoDeck = document.getElementById("deck-two");
     playerTwoDeck.innerHTML = "";
     var image = document.createElement("img");
-    var dir = "cards/" + "_Back.png";
+    var dir = "cards/" + "Back.png";
     image.setAttribute("src", dir);
     image.classList.add("card");
     playerTwoDeck.appendChild(image);
