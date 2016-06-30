@@ -250,21 +250,42 @@ function checkMoves(card) {
 */
 var declareWar = function() {
   console.log("WARRRR!");
-  //flip first card for each player
-  var flippedCard = hands[0][0];
-  hands[0] = hands[0].slice(1);
+    //check if they have enough cards to do war
+    if (hands[0].length > 1 && hands[1].length > 1){
+      //flip first card for each player
+      var flippedCard = hands[0][0];
+      hands[0] = hands[0].slice(1);
 
-  var flippCard2 = hands[1][0];
-  hands[1] = hands[1].slice(1);
+      var flippCard2 = hands[1][0];
+      hands[1] = hands[1].slice(1);
 
-  //draw the next card
-  var card = hands[0].shift();
-  moves[0] = card;
+      //draw the next card
+      var card = hands[0].shift();
+      moves[0] = card;
 
-  var card2 = hands[1].shift();
-  moves[1] = card2;
+      var card2 = hands[1].shift();
+      moves[1] = card2;
+    }
+    // if one of them has one card left just use that card
+    else if (hands[0].length == 1){
+      //draw the next card
+      var card = hands[0].shift();
+      moves[0] = card;
+    }
+    else if (hands[1].length == 1){
+      var card2 = hands[1].shift();
+      moves[1] = card2;
+    }
+    //there is war but the person has no more cards
+    else if(hands[0].length == 0){
+      console.log("Player 2 Wins!");
+    }
 
-}
+    else if(hands[1].length == 0){
+      console.log("Player 1 Wins!");
+    }
+
+  }
 
 /*
  This function starts the game
