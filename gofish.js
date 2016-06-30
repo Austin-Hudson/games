@@ -50,7 +50,6 @@ function start(){
   makeShortChoices();
   //start the game
   playGame();
-  console.log(hands[1]);
 
 }
 
@@ -71,16 +70,23 @@ function renderCards(hands){
     //empty exisiting contents
     var playerDiv = document.getElementById("player-hand");
     var computerDiv = document.getElementById("computer-hand");
+    //var ul = document.getElementById("card-container");
     playerDiv.innerHTML = "";
     computerDiv.innerHTML = "";
-
+    var left = 30;
+    console.log(hands);
     //treat the first hand as the human player and render them
     for(var i = 0; i < hands[0].length; i++){
+        var div = document.createElement("div");
+        div.classList.add("card-container");
         var card = document.createElement("img");
+        card.style.left = left + "px";
+        left += 30;
         var dir = "cards/" + hands[0][i].suit + " " + hands[0][i].value + ".png";
         card.setAttribute("src", dir);
         card.classList.add("card");
-        playerDiv.appendChild(card);
+        div.appendChild(card);
+        playerDiv.appendChild(div);
       }
 
     //render pile
@@ -205,7 +211,6 @@ function speechResult() {
  function playTurn(card){
       displayChoice(card);
       var guess;
-
       //turn true is player one
       if(turn){
         guess = searchForCard(card, hands[1]); //computer hand
@@ -224,9 +229,10 @@ function speechResult() {
           // if(!hands[0].includes(c)){
           //      hands[0].push(c);
           //    }
+          hands[0].push(c);
           makeShortChoices();
           renderOutcome(guess);
-
+          recognition.continuous = false;  //stop it's listening
         }
       }
       else { //turn false is computer
@@ -240,17 +246,20 @@ function speechResult() {
           guess = searchForCard(hands[1][compGuess].value,hands[0]); //player 1 hand
           renderOutcome(guess);
           addBook(hands[1]);
+          console.log(hands[1][compGuess].value);
         }
         if(!guess){
         //  console.log("guess: " + hands[1][compGuess].value);
           turn = true;
           addBook(hands[1]);
-          var card = deck.deal();
-          var c = new Card(card.value, card.suit);
+          var nCard = deck.deal();
+          var c = new Card(nCard.value,nCard.suit);
           // if(!hands[1].includes(c)){
           //      hands[1].push(c);
           //    }
+          hands[1].push(c)
           renderOutcome(guess);
+          recognition.continuous = true;  //continue it's listening
         }
       }
       // console.log(hands[1]);
@@ -296,8 +305,17 @@ function speechResult() {
   This function displays what the user said
  */
 function displayChoice(card){
+  var c = card;
+
+  //make it more readible if the computer picks the face cards
+  if(card == "11") {c = "Jack";}
+  else if(card == "12") {c = "Queen";}
+  else if(card == "13") {c = "King";}
+  else if(card == "1") {c = "Ace";}
+
+  //output the choice
   var choice = document.getElementById("choice");
-  choice.innerText = card;
+  choice.innerText = c;
 
 }
 /*
@@ -323,7 +341,8 @@ function playGame() {
  This function adds to the books to keep track of winner
 */
 function addBook(hand){
-  var count = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+  var count = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]; //used to determine the amount of books for each card value
+
 
   for(var i = 0; i < hand.length; i++){
       var value = hand[i].value;
