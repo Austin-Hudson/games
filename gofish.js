@@ -66,9 +66,12 @@ function createBooksForNPlayers(numOfPlayers){
 
 /*
 This function sorts the hands
+ source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
 */
 function sortHands(){
-
+  hands[0].sort(function(obj1, obj2){
+    return obj1.value - obj2.value;
+  });
 }
 
 /*
@@ -82,6 +85,8 @@ function renderCards(hands){
     playerDiv.innerHTML = "";
     computerDiv.innerHTML = "";
     var left = 30;
+    //call the funciton to sort hands
+    sortHands();
     console.log(hands);
     //treat the first hand as the human player and render them
     for(var i = 0; i < hands[0].length; i++){
