@@ -17,8 +17,8 @@ This version of War uses two players to play the traditional game of War.
 The controls uses mouse clicks. It's you versus another person. The
 key presses do everything for you. When there is "War", the application solves the answer and outputs the flipped over cards. It uses the traditional rules of War to play the game.
 ##### Technology Used
-This application uses HTML, CSS and Javascript.
+This application uses HTML, CSS, Javascript and JQuery.
 ##### Unsolved Problems
 The game has been working as intended until there are some "War" nuances in the game. For instance if they player doesn't have enough cards to do war.
 
-I plan on expanding the controls. So both players don't press the same button to play as well as adding statistics to it for the players. 
+I plan on expanding the controls. So both players don't press the same button to play as well as adding statistics to it for the players.

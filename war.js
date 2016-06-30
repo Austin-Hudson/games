@@ -39,6 +39,9 @@ function start(){
   renderDecks();
   //hide button
   startButton.classList.add("hidden");
+  //render "table"
+  var table = document.querySelector(".war-decks");
+  table.style.display = "flex";
   //set the progress to be true
   inProgress = true;
   //start the game
@@ -146,7 +149,7 @@ function renderMove(card){
  This function renders the war
 */
 function renderWar(){
-  var body = document.querySelector("body");
+  var scores = document.querySelector(".players-scores");
   var isW = document.querySelector(".war");
 
   //if there is war, render some text onto the screen
@@ -155,7 +158,8 @@ function renderWar(){
     w.classList.add("war");
     var content = document.createTextNode("WAR!");
     w.appendChild(content);
-    body.appendChild(w);
+    //JQuerty to insert after scores
+    $(w).insertAfter(scores);
   }
   else {
     //

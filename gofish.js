@@ -84,17 +84,13 @@ function renderCards(hands){
     //var ul = document.getElementById("card-container");
     playerDiv.innerHTML = "";
     computerDiv.innerHTML = "";
-    var left = 30;
     //call the funciton to sort hands
     sortHands();
-    console.log(hands);
     //treat the first hand as the human player and render them
     for(var i = 0; i < hands[0].length; i++){
         var div = document.createElement("div");
         div.classList.add("card-container");
         var card = document.createElement("img");
-        card.style.left = left + "px";
-        left += 30;
         var dir = "cards/" + hands[0][i].suit + " " + hands[0][i].value + ".png";
         card.setAttribute("src", dir);
         card.classList.add("card");
