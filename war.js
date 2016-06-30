@@ -162,7 +162,7 @@ function renderWar(){
     $(w).insertAfter(scores);
   }
   else {
-    //
+    isW.innerText = "WAR!";
   }
 
 }

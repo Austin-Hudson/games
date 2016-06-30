@@ -40,8 +40,9 @@
   justify-content: space-around;
   margin-top: 50px;
   align-items center;
-  margin-left: 30%;
-  margin-right: 30%;
+  margin-top: 0px;
+  margin-left: 32%;
+  margin-right: 32%;
   border: 5px solid #75540D;
   width: 500px;
 	height: 500px;
@@ -57,6 +58,7 @@
 }
 .war {
   margin-top: 5px;
+  margin-bottom: 10px;
   color: red;
   font-size: 18px;
 }
@@ -78,7 +80,7 @@
 
 #startgame{
   margin-left: 47%;
-  margin-top: 5%; 
+  margin-top: 5%;
   height: 40px;
   length: 100px;
 }
