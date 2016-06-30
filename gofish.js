@@ -8,15 +8,15 @@ var SpeechRecognition = window.webkitSpeechRecognition ||   //prefixes for cross
                         window.oSpeechRecognition      ||
                         window.SpeechRecognition,
     recognition       = new SpeechRecognition(),
-    deck              = new Deck(),
-    numOfPlayers      = 2,
-    handSize          = 7,
-    hands             = [],
-    books             = [],
-    commands          = [],
-    turn              = true,
-    development       = true,
-    inProgress        = false;
+    deck              = new Deck(), //deck used
+    numOfPlayers      = 2,  //number of players in the game
+    handSize          = 7, //each hand size for the players
+    hands             = [], //the games hands for all the players
+    books             = [], //books to determine the winner
+    commands          = [], //commands said by the user
+    turn              = true, //used to figure out whose turn it is
+    development       = true, //used for the developement process
+    inProgress        = false; //used for the state of the game
 
 //get the start button and make an event listener for it
 var startButton = document.querySelector('button');
@@ -57,6 +57,7 @@ function start(){
   This function creates a books array for all the players
 */
 function createBooksForNPlayers(numOfPlayers){
+  //while looping through the number of places, create a book for them
   for(var i = 0; i < numOfPlayers; i++)
   {
     books[i] = [];
@@ -64,10 +65,17 @@ function createBooksForNPlayers(numOfPlayers){
 }
 
 /*
+This function sorts the hands
+*/
+function sortHands(){
+
+}
+
+/*
   This function renders the cards
 */
 function renderCards(hands){
-    //empty exisiting contents
+    //get and empty existing elemnts
     var playerDiv = document.getElementById("player-hand");
     var computerDiv = document.getElementById("computer-hand");
     //var ul = document.getElementById("card-container");
@@ -126,7 +134,7 @@ function renderOutcome(guess){
   //get who the player is
   if(turn) { player = "Player 1";}
   else {player = "Computer";}
-
+  // add the outcome by the outcome if they guessed right or wrong
   if(guess){
     var content = player + " guessed correctly";
     outcome.innerText = content;
@@ -142,7 +150,7 @@ function renderOutcome(guess){
     var content = player + " says GoFish!";
 
   }
-
+  //set the outcome to the page
   outcome = document.getElementById("outcome");
   outcome.innerText = "";
   outcome.innerText = content;
@@ -173,13 +181,13 @@ function speechResult() {
 
    var words = transcript.split(" ");
    var result = words[words.length - 1];
-
+   //print the result from speech, helps with debugging
    if (development) {
      var dev = document.querySelector('#speech');
      dev.innerHTML = "";
      dev.innerHTML = "Last speech recognition result: <span class='italics'>" + result + "</span>";
    }
-
+   //check the match if its in the players hand
    var card = checkForMatch(result);
    if (deck.length == 0 || hands[0].length == 0 || hands[1].length == 0) {
      console.log("End Game");
@@ -193,11 +201,12 @@ function speechResult() {
  }
  /*
   This function looks to see if they want to ask the
-  computer for a certain card that exists in their hand
+  player for a certain card that exists in their hand
  */
   function checkForMatch(card) {
 
    var result = false;
+   //loop through the hand and determine if the card they asked is in their hand
    for (var i = 0; i < commands.length; i++) {
      if (commands[i] == card.toLowerCase()) {
        return card;
@@ -220,7 +229,7 @@ function speechResult() {
           speechResult();
           guess = searchForCard(card, hands[1]); //computer hand
           addBook(hands[0]);
-        }
+        } //if they guessed wrong deal a card and render it
         if(!guess){
           turn = false;
           addBook(hands[0]);
@@ -239,6 +248,7 @@ function speechResult() {
         var compGuess = computerGuess(hands[1]);
         displayChoice(hands[1][compGuess].value);
         guess = searchForCard(hands[1][compGuess].value,hands[0]); //player 1 hand
+        //while the computer is guessing right render it
         while(guess){
           compGuess = computerGuess(hands[0]);
           displayChoice(hands[1][compGuess].value);
@@ -246,7 +256,7 @@ function speechResult() {
           guess = searchForCard(hands[1][compGuess].value,hands[0]); //player 1 hand
           renderOutcome(guess);
           addBook(hands[1]);
-          console.log(hands[1][compGuess].value);
+
         }
         if(!guess){
         //  console.log("guess: " + hands[1][compGuess].value);
@@ -280,7 +290,7 @@ function speechResult() {
    else {
     var value = convertTextToValue(card.toLowerCase());
   }
-
+  // loop through the card and if the "right" guessed card to the respective hand
    for(var i = 0; i < hand.length; i++){
       // console.log("V:" + value);
       // console.log(hand[i].value);
@@ -343,11 +353,12 @@ function playGame() {
 function addBook(hand){
   var count = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]; //used to determine the amount of books for each card value
 
-
+  //count each card by their value
   for(var i = 0; i < hand.length; i++){
       var value = hand[i].value;
       count[value]++;
   }
+  //remove the card if it's a book
   for(var i = 0; i < count.length; i++){
     if(count[i] == 4) {
       if(turn)
@@ -363,6 +374,7 @@ function addBook(hand){
 This function removes the books in the hand
 */
 function removeFourOfKind(hand, value){
+  //loop through their hands and remove the books
   for(var i = 0; i < hand.length; i++){
      if(hand[i].value == value){
        if(turn)
@@ -382,7 +394,7 @@ function endGame() {
   var winner;
   var playerOneBook = books[0].length;
   var playerTwoBook = books[1].length;
-
+  //determine winner
   if(playerOneBook > playerTwoBook){
     winner = "Player 1 wins!";
   }
@@ -406,6 +418,7 @@ function endGame() {
  This function takes what they said and get the value
 */
 function convertTextToValue(card){
+      //convert the text to a value
      if(card =="ace" || card == "aces"){return 1;}
      if(card =="two" || card == "twos" || card == "2") {return 2;}
      if(card =="three" || card == "threes" || card == "3") {return 3;}
@@ -428,6 +441,7 @@ function convertTextToValue(card){
 */
 function makeShortChoices() {
   var shortChoices = [];
+  //make easier choices for the speech recognition
   for (var i = 0; i < hands[0].length; i++) {
       var value = hands[0][i].value;
       if(value == 1) {shortChoices.push("aces");

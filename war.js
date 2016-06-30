@@ -1,14 +1,14 @@
 //use these rules https://www.pagat.com/war/war.html
-var war             = new Deck(),
-    hands           = [],
-    numOfPlayers    = 2,
-    handSize        = 26,
-    playerOneScore  = 0,
-    playerTwoScore  = 0,
-    moves           = []
-    turn            = true
-    isWar           = false,
-    inProgress      = false;
+var war             = new Deck(), //deck to be used
+    hands           = [], //the hands for each player
+    numOfPlayers    = 2, //the number of players in the game
+    handSize        = 26, //the hand size
+    playerOneScore  = 0, //the score for player one
+    playerTwoScore  = 0, //the score for player two
+    moves           = [], //the current move that is in play
+    turn            = true, //whose turn it is
+    isWar           = false, //if there is war
+    inProgress      = false; //the state of the game
 
 
 //get the start button and make an event listener for it
@@ -78,7 +78,7 @@ function renderDecks(){
     image.classList.add("card");
     playerOneDeck.appendChild(image);
   }
-
+  //render the computer
   if(hands[1].length != 0){
     var playerTwoDeck = document.getElementById("deck-two");
     playerTwoDeck.innerHTML = "";
@@ -95,7 +95,7 @@ function renderDecks(){
  This function renders the move
 */
 function renderMove(card){
-
+  //render the image for the players hand
   if(hands[0].length != 0){
     if(turn && !isWar){
       var c = document.createElement("img");
@@ -106,6 +106,7 @@ function renderMove(card){
       c.classList.add("card");
       value.appendChild(c);
     }
+    //if its war have to render the new drawn cards
      else if(isWar){
       var c = document.createElement("img");
       var value = document.getElementById("deck-one-value");
@@ -117,6 +118,7 @@ function renderMove(card){
     }
 
   }
+    //if its the computer render their deck
     if(hands[1].length != 0){
       if(!turn && !isWar){
         var c = document.createElement("img");
@@ -127,6 +129,7 @@ function renderMove(card){
         c.classList.add("card");
         value.appendChild(c);
     }
+    //if its war render their card that they had to flip in war
       else if(isWar){
         var c = document.createElement("img");
         var value = document.getElementById("deck-two-value");
@@ -146,6 +149,7 @@ function renderWar(){
   var body = document.querySelector("body");
   var isW = document.querySelector(".war");
 
+  //if there is war, render some text onto the screen
   if(isW == null || isW.length == 0){
     var w = document.createElement("div");
     w.classList.add("war");
@@ -213,19 +217,19 @@ function checkMoves(card) {
   if(value == 1) {value = 14;}
   else if(valueTwo == 1) {valueTwo = 14;}
   console.log(value + " " + valueTwo);
-
+  //if player one drew a higher value
   if(value > valueTwo){
     playerOneScore++;
     hands[0].splice(hands[0].length,0,moves[0]);
     hands[0].splice(hands[0].length,0,moves[1]);
     removeWar();
-  }
+  }//if the computer drew a higher value
   else if(value < valueTwo){
     playerTwoScore++;
     hands[1].splice(hands[1].length, 0, moves[0]);
     hands[1].splice(hands[1].length,0, moves[1]);
     removeWar();
-  }
+  } //if there is war
   else if(value == valueTwo){
     isWar = true;
     declareWar();
@@ -274,6 +278,7 @@ function startGame() {
 */
 function endGame(){
     var winner;
+    //figure out the winner
     if(playerOneScore > playerTwoScore){
       winner = "Player 1 wins!";
     }
@@ -282,7 +287,7 @@ function endGame(){
     }
 
     var r = document.querySelector(".winner")
-
+    //display the winner
     if(r.length != 0 && r != null){
       var b = document.querySelector("body");
       var result = document.createElement("div");
