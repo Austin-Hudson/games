@@ -265,25 +265,26 @@ var declareWar = function() {
 
       var card2 = hands[1].shift();
       moves[1] = card2;
-    }
-    // if one of them has one card left just use that card
-    else if (hands[0].length == 1){
-      //draw the next card
-      var card = hands[0].shift();
-      moves[0] = card;
-    }
-    else if (hands[1].length == 1){
-      var card2 = hands[1].shift();
-      moves[1] = card2;
-    }
-    //there is war but the person has no more cards
-    else if(hands[0].length == 0){
-      console.log("Player 2 Wins!");
-    }
 
-    else if(hands[1].length == 0){
-      console.log("Player 1 Wins!");
     }
+    // // if one of them has one card left just use that card
+    // else if (hands[0].length == 1){
+    //   //draw the next card
+    //   var card = hands[0].shift();
+    //   moves[0] = card;
+    // }
+    // else if (hands[1].length == 1){
+    //   var card2 = hands[1].shift();
+    //   moves[1] = card2;
+    // }
+    // //there is war but the person has no more cards
+    // else if(hands[0].length == 0){
+    //   console.log("Player 2 Wins!");
+    // }
+    //
+    // else if(hands[1].length == 0){
+    //   console.log("Player 1 Wins!");
+    // }
 
   }
 
