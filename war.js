@@ -183,7 +183,6 @@ function removeWar(){
   This funciton makes the move
 */
 function makeMove(){
-  console.log(hands[0].length + hands[1].length);
   //only make the move if the game is in progress
   if(inProgress){
     if (hands[0].length !== 0 && hands[1].length !== 0)
@@ -261,21 +260,25 @@ var declareWar = function() {
   //check if they have enough cards to do war
   if (hands[0].length > 2 && hands[1].length > 2){
 
+  console.log("moves: ", moves);
     //Put current moves into winnerPile
     winnerPile.push(moves[0]);
     winnerPile.push(moves[1]);
+
+  console.log("Winners Pile Test1: ", winnerPile);
 
     //Put down one more card from each player
     winnerPile.push(hands[0].shift());
     winnerPile.push(hands[1].shift());
     //make the moves to flip over
-    makeMove();
-    makeMove();
+
+    console.log("Winners Pile Test2: ", winnerPile);
 
     //put those in the winner pile
-    winnerPile.push(moves[0]);
-    winnerPile.push(moves[1]);
+    winnerPile.push(hands[0].shift());
+    winnerPile.push(hands[1].shift());
 
+      console.log("Winners Pile Test3: ", winnerPile);
     // //push the next card to flip over
     // winnerPile.push(hands[0].shift());
     // winnerPile.push(hands[1].shift());
@@ -285,6 +288,8 @@ var declareWar = function() {
     //render it
     renderMove(winnerPile[winnerPile.length]);
     renderMove(winnerPile[winnerPile.length - 1]);
+
+
 
   }
   // // if one of them has one card left just use that card
