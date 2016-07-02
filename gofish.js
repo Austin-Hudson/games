@@ -103,7 +103,7 @@ function renderCards(hands){
       var stock = document.getElementById("deck");
       stock.innerHTML = "";
       var image = document.createElement("img");
-      var dir = "cards/" + "_Back.png";
+      var dir = "cards/" + "Back.png";
       image.setAttribute("src", dir);
       image.classList.add("card");
       stock.appendChild(image);
@@ -111,7 +111,7 @@ function renderCards(hands){
     //render computer hand
     for(var i =0; i < hands[1].length; i++){
       var image = document.createElement("img");
-      var dir = "cards/" + "_Back.png";
+      var dir = "cards/" + "Back.png";
       image.setAttribute("src", dir);
       image.classList.add("card");
       computerDiv.appendChild(image);
